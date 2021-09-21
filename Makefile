@@ -6,6 +6,6 @@ compile:
 run:
 	./powder
 push:
-	read desc
-	git commit -a -m "$desc"
+	read description
+	git commit -a -m "$description"
 	git push origin main
