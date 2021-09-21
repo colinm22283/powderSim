@@ -6,7 +6,5 @@ compile:
 run:
 	./powder
 push:
-	read version
-	echo $version
-	git commit -a -m $version
+	git commit -a -m "1.0"
 	git push origin main
