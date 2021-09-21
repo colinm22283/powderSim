@@ -6,6 +6,7 @@ compile:
 run:
 	./powder
 push:
-	read description
-	git commit -a -m "$description"
+	read version
+	echo $version
+	git commit -a -m $version
 	git push origin main
