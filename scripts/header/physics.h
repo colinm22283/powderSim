@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace Physics
 {
     extern int boardWidth;
@@ -7,8 +9,7 @@ namespace Physics
 
     extern int** board;
 
-    void resizeBoard(int w, int h);
-    void init();
+    void init(int w, int h);
     void update();
-    void render(int _x, int _y);
+    void render(int _x, int _y, uint8_t scale);
 }

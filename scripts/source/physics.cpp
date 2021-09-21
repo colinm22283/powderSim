@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <cstdint>
 
 #include "physics.h"
 #include "particle.h"
@@ -9,12 +10,10 @@ int Physics::boardWidth = 0;
 int Physics::boardHeight = 0;
 int** Physics::board;
 
-void Physics::resizeBoard(int w, int h)
+void Physics::init(int w, int h)
 {
     Physics::boardWidth = w;
     Physics::boardHeight = h;
-
-    free(Physics::board);
 
     Physics::board = (int**)malloc(sizeof(int*) * w);
     for (int i = 0; i < w; i++)
@@ -22,11 +21,6 @@ void Physics::resizeBoard(int w, int h)
         Physics::board[i] = (int*)malloc(sizeof(int) * h);
         for (int j = 0; j < h; j++) Physics::board[i][j] = 0;
     }
-}
-
-void Physics::init()
-{
-    Physics::resizeBoard(100, 100);
 }
 
 void Physics::update()
@@ -38,34 +32,32 @@ void Physics::update()
         {
             if (Physics::board[x][y] != 0)
             {
-                particle p = Particle::particles[Physics::board[x][y]];
+                particle p = Particle::particles[Physics::board[x][y] - 1];
                 if (p.isPowder)
                 {
-                    std::cout << x << ", " << y << "\n";
                     int temp = 0;
-                    if (Physics::board[x - 1][y - 1] == 0)
+                    if (x > 0 && Physics::board[x - 1][y + 1] == 0)
                     { partBuf[temp] = 0; temp++; }
-                    if (Physics::board[x][y - 1] == 0)
+                    if (Physics::board[x][y + 1] == 0)
                     { partBuf[temp] = 1; temp++; }
-                    if (Physics::board[x + 1][y - 1] == 0)
+                    if (x < Physics::boardWidth - 1 && Physics::board[x + 1][y + 1] == 0)
                     { partBuf[temp] = 2; temp++; }
                     if (temp > 0)
                     {
-                        std::cout << "test\n";
                         int sel = rand() % temp;
 
                         switch (partBuf[sel])
                         {
                             case 0:
-                                Physics::board[x - 1][y - 1] = Physics::board[x][y];
+                                Physics::board[x - 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
                                 break;
                             case 1:
-                                Physics::board[x][y - 1] = Physics::board[x][y];
+                                Physics::board[x][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
                                 break;
                             case 2:
-                                Physics::board[x + 1][y - 1] = Physics::board[x][y];
+                                Physics::board[x + 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
                                 break;
                         }
@@ -77,7 +69,7 @@ void Physics::update()
     free(partBuf);
 }
 
-void Physics::render(int _x, int _y)
+void Physics::render(int _x, int _y, uint8_t scale)
 {
     for (int x = 0; x < Physics::boardWidth; x++)
     {
@@ -86,7 +78,11 @@ void Physics::render(int _x, int _y)
             if (Physics::board[x][y] != 0)
             {
                 particle p = Particle::particles[Physics::board[x][y] - 1];
-                Render::drawPixel(x + _x, y + _y, p.c);
+                if (scale == 1) Render::drawPixel(x + _x, y + _y, p.c);
+                else
+                {
+                    Render::fillRect(x * scale + _x, y * scale + _y, scale, scale, p.c);
+                }
             }
         }
     }

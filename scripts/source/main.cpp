@@ -22,7 +22,7 @@ float blockPos = 0;
 
 void Script::start()
 {
-    Physics::init();
+    Physics::init(100, 100);
     for (int i = 40; i < 60; i++)
     {
         for (int j = 40; j < 60; j++)
@@ -33,8 +33,9 @@ void Script::start()
 }
 void Script::update()
 {
+    Render::clearScreen({ 0, 0, 0, 255 });
     Physics::update();
-    Physics::render(0, 0);
+    Physics::render(0, 0, 5);
 }
 
 void Script::mouseDown(int button) { }
