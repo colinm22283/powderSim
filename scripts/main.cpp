@@ -14,10 +14,7 @@ void Script::exit()
     Engine::quit = true;
 }
 
-void Script::keyDown(SDL_Keysym keysym)
-{
-    Console::print("Key: " + std::to_string(keysym.sym));
-}
+void Script::keyDown(SDL_Keysym keysym) { }
 
 float blockPos = 0;
 

@@ -6,5 +6,5 @@ compile:
 run:
 	./powder
 push:
-	git commit -m "1.0"
+	git commit -a -m "1.1"
 	git push origin main

@@ -6,6 +6,7 @@
 #include "consoleParser.h"
 #include "engine.h"
 #include "input.h"
+#include "global.h"
 
 SDL_Event Event::event;
 
@@ -29,6 +30,7 @@ void Event::update()
             ConsoleParser::keyDown(event.key.keysym);
             Console::keyDown(event.key.keysym);
             Script::keyDown(event.key.keysym);
+            if (Global::printKeys) Console::print("Key: " + std::to_string(event.key.keysym.sym));
             break;
         case SDL_MOUSEMOTION:
             SDL_GetMouseState(&Input::mouseX, &Input::mouseY);

@@ -30,7 +30,7 @@ bool Engine::init()
     else
     {
         SDL_CreateWindowAndRenderer(
-            Global::windowWidth, WINDOW_HEIGHT, 0,
+            Global::windowWidth, Global::windowHeight, 0,
             &window, &renderer
         );
         if (window == NULL)
@@ -59,8 +59,8 @@ void Engine::start()
     }
 
     Script::start();
-    std::thread eventThread(Event::init);
 
+    std::thread eventThread(Event::init);
     std::thread timerThread(timerUpdate);
 
     while (!Engine::quit)

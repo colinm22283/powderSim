@@ -41,18 +41,10 @@ bool ConsoleParser::parse(std::string code)
             SDL_SetWindowSize(window, w, h);
             Global::windowHeight = h;
         }
-        else if (second == "fpslimit")
-        {
-            Global::fpsLimit = std::stoi(third);
-        }
-        else if (second == "fpsoutput")
-        {
-            Global::fpsOutput = third == "true";
-        }
-        else
-        {
-            Console::print("Variable \"" + second + "\" does not exist.");
-        }
+        else if (second == "fpslimit") Global::fpsLimit = std::stoi(third);
+        else if (second == "fpsoutput") Global::fpsOutput = third == "true";
+        else if (second == "printkeys") Global::printKeys = third == "true";
+        else Console::print("Variable \"" + second + "\" does not exist.");
     }
     else if (first == "bind")
     {
