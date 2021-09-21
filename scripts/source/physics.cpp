@@ -28,9 +28,9 @@ void Physics::update()
     int* partBuf = (int*)malloc(sizeof(int) * 3);
     for (int x = 0; x < Physics::boardWidth; x++)
     {
-        for (int y = 0; y < Physics::boardHeight; y++)
+        for (int y = Physics::boardHeight - 1; y >= 0; y--)
         {
-            if (Physics::board[x][y] != 0)
+            if (Physics::board[x][y] != 0 && y < Physics::boardHeight - 1)
             {
                 particle p = Particle::particles[Physics::board[x][y] - 1];
                 if (p.isPowder)

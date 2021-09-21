@@ -23,13 +23,9 @@ float blockPos = 0;
 void Script::start()
 {
     Physics::init(100, 100);
-    for (int i = 40; i < 60; i++)
-    {
-        for (int j = 40; j < 60; j++)
-        {
-            Physics::board[i][j] = 1;
-        }
-    }
+
+    Global::fpsLimit = 20;
+    Global::fpsOutput = true;
 }
 void Script::update()
 {
@@ -38,5 +34,20 @@ void Script::update()
     Physics::render(0, 0, 5);
 }
 
-void Script::mouseDown(int button) { }
+void Script::mouseDown(int button)
+{
+    for (
+        int i = std::max(0, Input::mouseX / 5 - 10);
+        i < std::min(Physics::boardWidth - 1, Input::mouseX / 5 + 10);
+        i++
+    ) {
+        for (
+            int j = std::max(0, Input::mouseY / 5 - 10);
+            j < std::min(Physics::boardHeight - 1, Input::mouseY / 5 + 10);
+            j++
+        ) {
+            Physics::board[i][j] = 1;
+        }
+    }
+}
 void Script::mouseClick(int button) { }
