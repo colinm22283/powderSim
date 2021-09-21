@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 struct color
 {
     uint8_t r;
