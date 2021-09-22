@@ -6,5 +6,6 @@ compile:
 run:
 	./powder
 push:
+	git add ./scripts/header ./scripts/source
 	git commit -a -m "1.0"
 	git push origin main
