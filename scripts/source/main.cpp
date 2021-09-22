@@ -12,7 +12,7 @@
 #include "scriptGlobal.h"
 #include "font.h"
 #include "particle.h"
-#include "menu.h"
+#include "../header/menu.h"
 
 bool erase = false;
 
@@ -38,8 +38,6 @@ void Script::update()
     Physics::update();
     Physics::render(0, 0, ScriptGlobal::drawScale);
 
-    Menu::update();
-
     Render::drawRect( // draw cursor
         Input::mouseX - (10 * ScriptGlobal::drawScale),
         Input::mouseY - (10 * ScriptGlobal::drawScale),
@@ -47,13 +45,23 @@ void Script::update()
     );
 
     Render::setColor({ 255, 255, 255, 255 });
-    Render::drawText(
-        5, 5, Font::consolas,
-        Particle::particles[
-            Physics::board[Input::mouseX / ScriptGlobal::drawScale][Input::mouseY / ScriptGlobal::drawScale]
-        ].name + " (" + std::to_string(Input::mouseX) + ", " + std::to_string(Input::mouseY) + ")",
-        0.7
-    );
+    if (
+        Input::mouseX > 0 && Input::mouseX < Physics::boardWidth * ScriptGlobal::drawScale &&
+        Input::mouseY > 0 && Input::mouseY < Physics::boardHeight * ScriptGlobal::drawScale
+    )
+    {
+        Render::drawText(
+            5, 5, Font::consolas,
+            Particle::particles[
+                Physics::board[Input::mouseX / ScriptGlobal::drawScale][Input::mouseY / ScriptGlobal::drawScale]
+            ].name + " (" +
+                std::to_string(Input::mouseX / ScriptGlobal::drawScale) + ", " +
+                std::to_string(Input::mouseY / ScriptGlobal::drawScale) + ")",
+            0.7
+        );
+    }
+
+    Menu::update();
 }
 
 void Script::mouseDown(int button)
@@ -71,13 +79,15 @@ void Script::mouseDown(int button)
             if (button == SDL_BUTTON_LEFT)
             {
                 if (erase) Physics::board[i][j] = 0;
-                else Physics::board[i][j] = 1;
+                else Physics::board[i][j] = Menu::selectedTool;
             }
         }
     }
 }
 void Script::mouseClick(int button)
 {
+    Menu::onClick(Input::mouseX, Input::mouseY);
+
     if (button == SDL_BUTTON_RIGHT)
     {
         erase = !erase;
