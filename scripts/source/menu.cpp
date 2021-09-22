@@ -1,10 +1,12 @@
 #include <string>
+#include <iostream>
 
 #include "../header/menu.h"
 #include "render.h"
 #include "global.h"
 #include "font.h"
 #include "../header/particle.h"
+#include "console.h"
 
 int Menu::selectedTool = 1;
 int Menu::items[3] = {
@@ -26,13 +28,16 @@ void Menu::update()
 
 void Menu::onClick(int x, int y)
 {
+    std::cout << x << ", " << y << "\n";
     for (int i = 0; i < (int)(sizeof(Menu::items) / sizeof(int)); i++)
     {
+        Console::print(std::to_string(i));
         if (
             x >= Global::windowWidth - 90 && x <= Global::windowWidth - 10 &&
-            y >= i * 25 + 10 && i * 25 + 30
+            y >= i * 25 + 10 && y <= i * 25 + 30
         )
         {
+            Console::print("test: " + std::to_string(Menu::items[i]));
             selectedTool = Menu::items[i];
             break;
         }

@@ -86,10 +86,13 @@ void Script::mouseDown(int button)
 }
 void Script::mouseClick(int button)
 {
-    Menu::onClick(Input::mouseX, Input::mouseY);
-
-    if (button == SDL_BUTTON_RIGHT)
+    switch (button)
     {
+    case SDL_BUTTON_LEFT:
+        Menu::onClick(Input::mouseX, Input::mouseY);
+        break;
+    case SDL_BUTTON_RIGHT:
         erase = !erase;
+        break;
     }
 }

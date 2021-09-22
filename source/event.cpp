@@ -1,4 +1,5 @@
 #include "SDL/SDL.h"
+#include <iostream>
 
 #include "script.h"
 #include "event.h"
@@ -55,6 +56,7 @@ void Event::update()
         case SDL_MOUSEBUTTONUP:
         {
             Script::mouseClick(event.button.button);
+
             switch (event.button.button)
             {
             case SDL_BUTTON_LEFT:

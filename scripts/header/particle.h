@@ -13,6 +13,7 @@ struct particle
 {
     color c;
     MatterState state;
+    int weight;
     std::string name;
 };
 

@@ -40,12 +40,16 @@ void Physics::update()
                     if (y < Physics::boardHeight - 1)
                     {
                         int temp = 0;
-                        if (x > 0 && Physics::board[x - 1][y + 1] == 0)
-                        { partBuf[temp] = 0; temp++; }
-                        if (Physics::board[x][y + 1] == 0)
+                        if (
+                            x > 0 &&
+                            Particle::particles[Physics::board[x - 1][y + 1]].weight < p.weight
+                        ) { partBuf[temp] = 0; temp++; }
+                        if (Particle::particles[Physics::board[x][y + 1]].weight < p.weight)
                         { partBuf[temp] = 1; temp++; }
-                        if (x < Physics::boardWidth - 1 && Physics::board[x + 1][y + 1] == 0)
-                        { partBuf[temp] = 2; temp++; }
+                        if (
+                            x < Physics::boardWidth - 1 &&
+                            Particle::particles[Physics::board[x + 1][y + 1]].weight < p.weight
+                        ) { partBuf[temp] = 2; temp++; }
                         if (temp > 0)
                         {
                             int sel = rand() % temp;
@@ -54,20 +58,23 @@ void Physics::update()
                             {
                                 case 0:
                                 {
-                                    Physics::board[x - 1][y + 1] = Physics::board[x][y];
-                                    Physics::board[x][y] = 0;
+                                    int temp2 = Physics::board[x][y];
+                                    Physics::board[x][y] = Physics::board[x - 1][y + 1];
+                                    Physics::board[x - 1][y + 1] = temp2;
                                     break;
                                 }
                                 case 1:
                                 {
-                                    Physics::board[x][y + 1] = Physics::board[x][y];
-                                    Physics::board[x][y] = 0;
+                                    int temp2 = Physics::board[x][y];
+                                    Physics::board[x][y] = Physics::board[x][y + 1];
+                                    Physics::board[x][y + 1] = temp2;
                                     break;
                                 }
                                 case 2:
                                 {
-                                    Physics::board[x + 1][y + 1] = Physics::board[x][y];
-                                    Physics::board[x][y] = 0;
+                                    int temp2 = Physics::board[x][y];
+                                    Physics::board[x][y] = Physics::board[x + 1][y + 1];
+                                    Physics::board[x + 1][y + 1] = temp2;
                                     break;
                                 }
                             }
