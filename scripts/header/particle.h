@@ -1,15 +1,22 @@
 #pragma once
 
+#include <string>
+
 #include "color.h"
+
+enum MatterState
+{
+    SOLID, DUST, LIQUID, GAS, PLASMA
+};
 
 struct particle
 {
     color c;
-    int weight;
-    bool isPowder;
+    MatterState state;
+    std::string name;
 };
 
 namespace Particle
 {
-    extern particle particles[1];
+    extern particle particles[3];
 }

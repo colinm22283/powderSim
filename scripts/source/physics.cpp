@@ -26,40 +26,103 @@ void Physics::init(int w, int h)
 void Physics::update()
 {
     int* partBuf = (int*)malloc(sizeof(int) * 3);
+    int* liqBuf = (int*)malloc(sizeof(int) * 5);
     for (int x = 0; x < Physics::boardWidth; x++)
     {
         for (int y = Physics::boardHeight - 1; y >= 0; y--)
         {
-            if (Physics::board[x][y] != 0 && y < Physics::boardHeight - 1)
+            if (Physics::board[x][y] != 0)
             {
-                particle p = Particle::particles[Physics::board[x][y] - 1];
-                if (p.isPowder)
+                particle p = Particle::particles[Physics::board[x][y]];
+                
+                if (p.state == MatterState::DUST)
+                {
+                    if (y < Physics::boardHeight - 1)
+                    {
+                        int temp = 0;
+                        if (x > 0 && Physics::board[x - 1][y + 1] == 0)
+                        { partBuf[temp] = 0; temp++; }
+                        if (Physics::board[x][y + 1] == 0)
+                        { partBuf[temp] = 1; temp++; }
+                        if (x < Physics::boardWidth - 1 && Physics::board[x + 1][y + 1] == 0)
+                        { partBuf[temp] = 2; temp++; }
+                        if (temp > 0)
+                        {
+                            int sel = rand() % temp;
+
+                            switch (partBuf[sel])
+                            {
+                                case 0:
+                                {
+                                    Physics::board[x - 1][y + 1] = Physics::board[x][y];
+                                    Physics::board[x][y] = 0;
+                                    break;
+                                }
+                                case 1:
+                                {
+                                    Physics::board[x][y + 1] = Physics::board[x][y];
+                                    Physics::board[x][y] = 0;
+                                    break;
+                                }
+                                case 2:
+                                {
+                                    Physics::board[x + 1][y + 1] = Physics::board[x][y];
+                                    Physics::board[x][y] = 0;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (p.state == MatterState::LIQUID)
                 {
                     int temp = 0;
-                    if (x > 0 && Physics::board[x - 1][y + 1] == 0)
-                    { partBuf[temp] = 0; temp++; }
-                    if (Physics::board[x][y + 1] == 0)
-                    { partBuf[temp] = 1; temp++; }
-                    if (x < Physics::boardWidth - 1 && Physics::board[x + 1][y + 1] == 0)
-                    { partBuf[temp] = 2; temp++; }
+                    if (x > 0 && Physics::board[x - 1][y] == 0)
+                    { liqBuf[temp] = 0; temp++; }
+                    if (x > 0 && y < Physics::boardHeight - 1 && Physics::board[x - 1][y + 1] == 0)
+                    { liqBuf[temp] = 1; temp++; }
+                    if (y < Physics::boardHeight - 1 && Physics::board[x][y + 1] == 0)
+                    { liqBuf[temp] = 2; temp++; }
+                    if (x < Physics::boardWidth - 1 && y < Physics::boardHeight - 1 && Physics::board[x + 1][y + 1] == 0)
+                    { liqBuf[temp] = 3; temp++; }
+                    if (x < Physics::boardWidth - 1 && Physics::board[x + 1][y] == 0)
+                    { liqBuf[temp] = 4; temp++; }
                     if (temp > 0)
                     {
                         int sel = rand() % temp;
 
-                        switch (partBuf[sel])
+                        switch (liqBuf[sel])
                         {
                             case 0:
+                            {
+                                Physics::board[x - 1][y] = Physics::board[x][y];
+                                Physics::board[x][y] = 0;
+                                break;
+                            }
+                            case 1:
+                            {
                                 Physics::board[x - 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
                                 break;
-                            case 1:
+                            }
+                            case 2:
+                            {
                                 Physics::board[x][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
                                 break;
-                            case 2:
+                            }
+                            case 3:
+                            {
                                 Physics::board[x + 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
                                 break;
+                            }
+                            case 4:
+                            {
+                                Physics::board[x + 1][y] = Physics::board[x][y];
+                                Physics::board[x][y] = 0;
+                                break;
+                            }
                         }
                     }
                 }
@@ -77,7 +140,7 @@ void Physics::render(int _x, int _y, uint8_t scale)
         {
             if (Physics::board[x][y] != 0)
             {
-                particle p = Particle::particles[Physics::board[x][y] - 1];
+                particle p = Particle::particles[Physics::board[x][y]];
                 if (scale == 1) Render::drawPixel(x + _x, y + _y, p.c);
                 else
                 {

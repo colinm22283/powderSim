@@ -10,6 +10,8 @@
 #include "physics.h"
 #include "consoleParser.h"
 #include "scriptGlobal.h"
+#include "font.h"
+#include "particle.h"
 
 bool erase = false;
 
@@ -35,10 +37,19 @@ void Script::update()
     Physics::update();
     Physics::render(0, 0, ScriptGlobal::drawScale);
 
-    Render::drawRect(
+    Render::drawRect( // draw cursor
         Input::mouseX - (10 * ScriptGlobal::drawScale),
         Input::mouseY - (10 * ScriptGlobal::drawScale),
         20 * ScriptGlobal::drawScale, 20 * ScriptGlobal::drawScale, { 255, 255, 255, 255 }
+    );
+
+    Render::setColor({ 255, 255, 255, 255 });
+    Render::drawText(
+        5, 5, Font::consolas,
+        Particle::particles[
+            Physics::board[Input::mouseX / ScriptGlobal::drawScale][Input::mouseY / ScriptGlobal::drawScale]
+        ].name + " (" + std::to_string(Input::mouseX) + ", " + std::to_string(Input::mouseY) + ")",
+        0.7
     );
 }
 
@@ -46,12 +57,12 @@ void Script::mouseDown(int button)
 {
     for (
         int i = std::max(0, Input::mouseX / ScriptGlobal::drawScale - 10);
-        i < std::min(Physics::boardWidth - 1, Input::mouseX / ScriptGlobal::drawScale + 10);
+        i < std::min(Physics::boardWidth, Input::mouseX / ScriptGlobal::drawScale + 10);
         i++
     ) {
         for (
             int j = std::max(0, Input::mouseY / ScriptGlobal::drawScale - 10);
-            j < std::min(Physics::boardHeight - 1, Input::mouseY / ScriptGlobal::drawScale + 10);
+            j < std::min(Physics::boardHeight, Input::mouseY / ScriptGlobal::drawScale + 10);
             j++
         ) {
             if (button == SDL_BUTTON_LEFT)
