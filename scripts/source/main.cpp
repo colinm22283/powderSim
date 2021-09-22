@@ -12,6 +12,7 @@
 #include "scriptGlobal.h"
 #include "font.h"
 #include "particle.h"
+#include "menu.h"
 
 bool erase = false;
 
@@ -27,7 +28,7 @@ float blockPos = 0;
 
 void Script::start()
 {
-    Physics::init(200, 150);
+    Physics::init(175, 150);
 
     Global::fpsOutput = true;
 }
@@ -36,6 +37,8 @@ void Script::update()
     Render::clearScreen({ 0, 0, 0, 255 });
     Physics::update();
     Physics::render(0, 0, ScriptGlobal::drawScale);
+
+    Menu::update();
 
     Render::drawRect( // draw cursor
         Input::mouseX - (10 * ScriptGlobal::drawScale),
@@ -57,12 +60,12 @@ void Script::mouseDown(int button)
 {
     for (
         int i = std::max(0, Input::mouseX / ScriptGlobal::drawScale - 10);
-        i < std::min(Physics::boardWidth, Input::mouseX / ScriptGlobal::drawScale + 10);
+        i < std::min(Physics::boardWidth, (int)(Input::mouseX / ScriptGlobal::drawScale + 10));
         i++
     ) {
         for (
             int j = std::max(0, Input::mouseY / ScriptGlobal::drawScale - 10);
-            j < std::min(Physics::boardHeight, Input::mouseY / ScriptGlobal::drawScale + 10);
+            j < std::min(Physics::boardHeight, (int)(Input::mouseY / ScriptGlobal::drawScale + 10));
             j++
         ) {
             if (button == SDL_BUTTON_LEFT)
