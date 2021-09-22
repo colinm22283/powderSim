@@ -28,7 +28,7 @@ float blockPos = 0;
 
 void Script::start()
 {
-    Physics::init(175, 150);
+    Physics::init(350, 300);
 
     Global::fpsOutput = true;
 }
