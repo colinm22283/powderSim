@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <cstdint>
+#include <math.h>
 
 #include "physics.h"
 #include "particle.h"
@@ -116,30 +117,40 @@ void Physics::update()
                             {
                                 Physics::board[x - 1][y] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
+                                Physics::lifespan[x - 1][y] = Physics::lifespan[x][y];
+                                Physics::lifespan[x][y] = 0;
                                 break;
                             }
                             case 1:
                             {
                                 Physics::board[x - 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
+                                Physics::lifespan[x - 1][y + 1] = Physics::lifespan[x][y];
+                                Physics::lifespan[x][y] = 0;
                                 break;
                             }
                             case 2:
                             {
                                 Physics::board[x][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
+                                Physics::lifespan[x][y + 1] = Physics::lifespan[x][y];
+                                Physics::lifespan[x][y] = 0;
                                 break;
                             }
                             case 3:
                             {
                                 Physics::board[x + 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
+                                Physics::lifespan[x + 1][y + 1] = Physics::lifespan[x][y];
+                                Physics::lifespan[x][y] = 0;
                                 break;
                             }
                             case 4:
                             {
                                 Physics::board[x + 1][y] = Physics::board[x][y];
                                 Physics::board[x][y] = 0;
+                                Physics::lifespan[x + 1][y] = Physics::lifespan[x][y];
+                                Physics::lifespan[x][y] = 0;
                                 break;
                             }
                         }
@@ -228,7 +239,6 @@ void Physics::update()
     lifespanClock += Engine::deltaTime;
     if (lifespanClock >= Physics::lifespanLength)
     {
-        std::cout << "test\n";
         for (int i = 0; i < Physics::boardWidth; i++)
         {
             for (int j = 0; j < Physics::boardHeight; j++)
@@ -258,6 +268,22 @@ void Physics::render(int _x, int _y, uint8_t scale)
                 if (scale == 1)
                 {
                     Render::drawPixel(x + _x, y + _y, p.c);
+                    if (style.glow > 0)
+                    {
+                        std::cout << "aa\n";
+                        for (int i = x + _x - style.glow; i < x + _x + style.glow; i++)
+                        {
+                            for (int j = y + _y - style.glow; j < y + _y + style.glow; j++)
+                            {
+                                Render::drawPixel(i, j, {
+                                    (uint8_t)(p.c.r - sqrt(pow(i - x - _x, 2) + pow(j - y - _y, 2))),
+                                    0,
+                                    0,
+                                    255
+                                });
+                            }
+                        }
+                    }
                 }
                 else
                 {

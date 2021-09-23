@@ -8,8 +8,8 @@ particle Particle::particles[4] = {
 };
 
 renderStyle Particle::style[4] = {
-    { false },
-    { false },
-    { false },
-    { true }
-}
+    { 0 },
+    { 0 },
+    { 0 },
+    { 10 }
+};

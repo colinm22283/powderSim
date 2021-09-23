@@ -21,7 +21,7 @@ struct particle
 
 struct renderStyle
 {
-    bool glow;
+    int glow;
 };
 
 namespace Particle
