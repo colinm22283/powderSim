@@ -66,6 +66,7 @@ void Script::update()
 
 void Script::mouseDown(int button)
 {
+    if (Input::mouseX / ScriptGlobal::drawScale < Physics::boardWidth)
     for (
         int i = std::max(0, Input::mouseX / ScriptGlobal::drawScale - 10);
         i < std::min(Physics::boardWidth, (int)(Input::mouseX / ScriptGlobal::drawScale + 10));
