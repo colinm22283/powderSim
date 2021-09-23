@@ -13,11 +13,13 @@ struct particle
 {
     color c;
     MatterState state;
-    int weight;
+    float weight;
     std::string name;
+    int lifespanMin;
+    int lifespanMax;
 };
 
 namespace Particle
 {
-    extern particle particles[3];
+    extern particle particles[4];
 }

@@ -9,8 +9,8 @@
 #include "console.h"
 
 int Menu::selectedTool = 1;
-int Menu::items[3] = {
-    0, 1, 2
+int Menu::items[4] = {
+    0, 1, 2, 3
 };
 
 void Menu::update()

@@ -19,6 +19,9 @@ bool erase = false;
 void Script::exit()
 {
     Console::print("Exit");
+
+    Physics::destroy();
+
     Engine::quit = true;
 }
 
@@ -79,8 +82,8 @@ void Script::mouseDown(int button)
         ) {
             if (button == SDL_BUTTON_LEFT)
             {
-                if (erase) Physics::board[i][j] = 0;
-                else Physics::board[i][j] = Menu::selectedTool;
+                if (erase) Physics::createParticle(i, j, 0);
+                else Physics::createParticle(i, j, Menu::selectedTool);
             }
         }
     }
