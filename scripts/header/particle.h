@@ -19,7 +19,13 @@ struct particle
     int lifespanMax;
 };
 
+struct renderStyle
+{
+    bool glow;
+};
+
 namespace Particle
 {
     extern particle particles[4];
+    extern renderStyle style[4];
 }

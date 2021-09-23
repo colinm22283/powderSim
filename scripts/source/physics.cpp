@@ -145,7 +145,19 @@ void Physics::update()
                         }
                     }
                 }
-                else if (p.state == MatterState::PLASMA)
+            }
+        }
+    }
+
+    for (int x = 0; x < Physics::boardWidth; x++)
+    {
+        for (int y = 0; y < Physics::boardHeight; y++)
+        {
+            if (Physics::board[x][y] != 0)
+            {
+                particle p = Particle::particles[Physics::board[x][y]];
+                
+                if (p.state == MatterState::PLASMA)
                 {
                     int temp = 0;
                     if (x > 0 && Physics::board[x - 1][y] == 0)
@@ -210,6 +222,7 @@ void Physics::update()
             }
         }
     }
+
     free(partBuf);
 
     lifespanClock += Engine::deltaTime;
@@ -240,8 +253,12 @@ void Physics::render(int _x, int _y, uint8_t scale)
         {
             if (Physics::board[x][y] != 0)
             {
+                renderStyle style = Particle::style[Physics::board[x][y]];
                 particle p = Particle::particles[Physics::board[x][y]];
-                if (scale == 1) Render::drawPixel(x + _x, y + _y, p.c);
+                if (scale == 1)
+                {
+                    Render::drawPixel(x + _x, y + _y, p.c);
+                }
                 else
                 {
                     Render::fillRect(x * scale + _x, y * scale + _y, scale, scale, p.c);
