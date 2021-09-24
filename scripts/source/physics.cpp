@@ -39,7 +39,7 @@ void Physics::init(int w, int h)
 void Physics::update()
 {
     int* partBuf = (int*)malloc(sizeof(int) * 3);
-    int* liqBuf = (int*)malloc(sizeof(int) * 12);
+    int* liqBuf = (int*)malloc(sizeof(int) * 9);
     for (int x = 0; x < Physics::boardWidth; x++)
     {
         for (int y = Physics::boardHeight - 1; y >= 0; y--)
@@ -108,19 +108,19 @@ void Physics::update()
                     int temp = 0;
                     if (x > 0 &&
                         Particle::particles[Physics::board[x - 1][y]].weight < p.weight
-                    ) { liqBuf[temp] = 0; temp++; }
+                    ) { for (int i = 0; i < 2; i++) { liqBuf[temp] = 0; temp++; } }
                     if (x > 0 && y < Physics::boardHeight - 1 &&
                         Particle::particles[Physics::board[x - 1][y + 1]].weight < p.weight
-                    ) { for (int i = 0; i < 3; i++) { liqBuf[temp] = 1; temp++; } }
+                    ) { for (int i = 0; i < 2; i++) { liqBuf[temp] = 1; temp++; } }
                     if (y < Physics::boardHeight - 1 &&
                         Particle::particles[Physics::board[x][y + 1]].weight < p.weight
-                    ) { for (int i = 0; i < 3; i++) { liqBuf[temp] = 2; temp++; } }
+                    ) { liqBuf[temp] = 2; temp++; }
                     if (x < Physics::boardWidth - 1 && y < Physics::boardHeight - 1 &&
                         Particle::particles[Physics::board[x + 1][y + 1]].weight < p.weight
-                    ) { for (int i = 0; i < 3; i++) { liqBuf[temp] = 3; temp++; } }
+                    ) { for (int i = 0; i < 2; i++) { liqBuf[temp] = 3; temp++; } }
                     if (x < Physics::boardWidth - 1 &&
                         Particle::particles[Physics::board[x + 1][y]].weight < p.weight
-                    ) { liqBuf[temp] = 4; temp++; }
+                    ) { for (int i = 0; i < 2; i++) { liqBuf[temp] = 4; temp++; } }
                     if (temp > 0)
                     {
                         int sel = rand() % temp;
@@ -152,8 +152,8 @@ void Physics::update()
                                 int temp2 = Physics::board[x][y + 1];
                                 Physics::board[x][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = temp2;
-                                int temp3 = Physics::lifespan[x - 1][y];
-                                Physics::lifespan[x][y + 1] = Physics::lifespan[x][y + 1];
+                                int temp3 = Physics::lifespan[x][y + 1];
+                                Physics::lifespan[x][y + 1] = Physics::lifespan[x][y];
                                 Physics::lifespan[x][y] = temp3;
                                 break;
                             }
@@ -162,8 +162,8 @@ void Physics::update()
                                 int temp2 = Physics::board[x + 1][y + 1];
                                 Physics::board[x + 1][y + 1] = Physics::board[x][y];
                                 Physics::board[x][y] = temp2;
-                                int temp3 = Physics::lifespan[x - 1][y];
-                                Physics::lifespan[x + 1][y + 1] = Physics::lifespan[x + 1][y + 1];
+                                int temp3 = Physics::lifespan[x + 1][y + 1];
+                                Physics::lifespan[x + 1][y + 1] = Physics::lifespan[x][y];
                                 Physics::lifespan[x][y] = temp3;
                                 break;
                             }
@@ -172,8 +172,8 @@ void Physics::update()
                                 int temp2 = Physics::board[x + 1][y];
                                 Physics::board[x + 1][y] = Physics::board[x][y];
                                 Physics::board[x][y] = temp2;
-                                int temp3 = Physics::lifespan[x - 1][y];
-                                Physics::lifespan[x + 1][y] = Physics::lifespan[x + 1][y];
+                                int temp3 = Physics::lifespan[x + 1][y];
+                                Physics::lifespan[x + 1][y] = Physics::lifespan[x][y];
                                 Physics::lifespan[x][y] = temp3;
                                 break;
                             }
@@ -259,6 +259,7 @@ void Physics::update()
     }
 
     free(partBuf);
+    free(liqBuf);
 
     lifespanClock += Engine::deltaTime;
     if (lifespanClock >= Physics::lifespanLength)
