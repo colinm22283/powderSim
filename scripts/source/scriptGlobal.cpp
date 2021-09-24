@@ -1,3 +1,3 @@
 #include "scriptGlobal.h"
 
-int ScriptGlobal::drawScale = 2;
+int ScriptGlobal::drawScale = 1;

@@ -257,6 +257,16 @@ void Physics::update()
 
 void Physics::render(int _x, int _y, uint8_t scale)
 {
+    int** glowMap = (int**)malloc(sizeof(int*) * Physics::boardWidth);
+    for (int i = 0; i < Physics::boardWidth; i++)
+    {
+        glowMap[i] = (int*)malloc(sizeof(int) * Physics::boardHeight);
+        for (int j = 0; j < Physics::boardHeight; j++)
+        {
+            glowMap[i][j] = 0;
+        }
+    }
+
     for (int x = 0; x < Physics::boardWidth; x++)
     {
         for (int y = 0; y < Physics::boardHeight; y++)
@@ -268,18 +278,18 @@ void Physics::render(int _x, int _y, uint8_t scale)
                 if (scale == 1)
                 {
                     Render::drawPixel(x + _x, y + _y, p.c);
-                    if (style.glow > 0)
+                    if (style.glow > 0 && false)
                     {
-                        std::cout << "aa\n";
                         for (int i = x + _x - style.glow; i < x + _x + style.glow; i++)
                         {
                             for (int j = y + _y - style.glow; j < y + _y + style.glow; j++)
                             {
+                                //glowMap[i][j];
                                 Render::drawPixel(i, j, {
-                                    (uint8_t)(p.c.r - sqrt(pow(i - x - _x, 2) + pow(j - y - _y, 2))),
+                                    255,
                                     0,
                                     0,
-                                    255
+                                    (uint8_t)(sqrt(pow(i - x - _x, 2) + pow(j - y - _y, 2)) * 30)
                                 });
                             }
                         }
@@ -292,13 +302,18 @@ void Physics::render(int _x, int _y, uint8_t scale)
             }
         }
     }
+
+    free(glowMap);
 }
 
 void Physics::createParticle(int x, int y, int id)
 {
     Physics::board[x][y] = id;
     if (Particle::particles[id].lifespanMin == -1) Physics::lifespan[x][y] = -1;
-    else Physics::lifespan[x][y] = (int)(rand() % (Particle::particles[id].lifespanMax - Particle::particles[id].lifespanMin) + Particle::particles[id].lifespanMin);
+    else Physics::lifespan[x][y] = (int)(
+        rand() % (Particle::particles[id].lifespanMax - Particle::particles[id].lifespanMin) +
+        Particle::particles[id].lifespanMin
+    );
 }
 
 void Physics::destroy()
