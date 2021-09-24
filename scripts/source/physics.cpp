@@ -74,6 +74,9 @@ void Physics::update()
                                     int temp2 = Physics::board[x][y];
                                     Physics::board[x][y] = Physics::board[x - 1][y + 1];
                                     Physics::board[x - 1][y + 1] = temp2;
+                                    int temp3 = Physics::lifespan[x][y];
+                                    Physics::lifespan[x][y] = Physics::lifespan[x - 1][y + 1];
+                                    Physics::lifespan[x - 1][y + 1] = temp3;
                                     break;
                                 }
                                 case 1:
@@ -81,6 +84,9 @@ void Physics::update()
                                     int temp2 = Physics::board[x][y];
                                     Physics::board[x][y] = Physics::board[x][y + 1];
                                     Physics::board[x][y + 1] = temp2;
+                                    int temp3 = Physics::lifespan[x][y];
+                                    Physics::lifespan[x][y] = Physics::lifespan[x][y + 1];
+                                    Physics::lifespan[x][y + 1] = temp3;
                                     break;
                                 }
                                 case 2:
@@ -88,6 +94,9 @@ void Physics::update()
                                     int temp2 = Physics::board[x][y];
                                     Physics::board[x][y] = Physics::board[x + 1][y + 1];
                                     Physics::board[x + 1][y + 1] = temp2;
+                                    int temp3 = Physics::lifespan[x][y];
+                                    Physics::lifespan[x][y] = Physics::lifespan[x + 1][y + 1];
+                                    Physics::lifespan[x + 1][y + 1] = temp3;
                                     break;
                                 }
                             }
@@ -115,42 +124,47 @@ void Physics::update()
                         {
                             case 0:
                             {
+                                int temp2 = Physics::board[x - 1][y];
                                 Physics::board[x - 1][y] = Physics::board[x][y];
-                                Physics::board[x][y] = 0;
+                                Physics::board[x][y] = temp2;
                                 Physics::lifespan[x - 1][y] = Physics::lifespan[x][y];
-                                Physics::lifespan[x][y] = 0;
+                                Physics::lifespan[x][y] = -1;
                                 break;
                             }
                             case 1:
                             {
+                                int temp2 = Physics::board[x - 1][y];
                                 Physics::board[x - 1][y + 1] = Physics::board[x][y];
-                                Physics::board[x][y] = 0;
+                                Physics::board[x][y] = temp2;
                                 Physics::lifespan[x - 1][y + 1] = Physics::lifespan[x][y];
-                                Physics::lifespan[x][y] = 0;
+                                Physics::lifespan[x][y] = -1;
                                 break;
                             }
                             case 2:
                             {
+                                int temp2 = Physics::board[x - 1][y];
                                 Physics::board[x][y + 1] = Physics::board[x][y];
-                                Physics::board[x][y] = 0;
+                                Physics::board[x][y] = temp2;
                                 Physics::lifespan[x][y + 1] = Physics::lifespan[x][y];
-                                Physics::lifespan[x][y] = 0;
+                                Physics::lifespan[x][y] = -1;
                                 break;
                             }
                             case 3:
                             {
+                                int temp2 = Physics::board[x - 1][y];
                                 Physics::board[x + 1][y + 1] = Physics::board[x][y];
-                                Physics::board[x][y] = 0;
+                                Physics::board[x][y] = temp2;
                                 Physics::lifespan[x + 1][y + 1] = Physics::lifespan[x][y];
-                                Physics::lifespan[x][y] = 0;
+                                Physics::lifespan[x][y] = -1;
                                 break;
                             }
                             case 4:
                             {
+                                int temp2 = Physics::board[x - 1][y];
                                 Physics::board[x + 1][y] = Physics::board[x][y];
-                                Physics::board[x][y] = 0;
+                                Physics::board[x][y] = temp2;
                                 Physics::lifespan[x + 1][y] = Physics::lifespan[x][y];
-                                Physics::lifespan[x][y] = 0;
+                                Physics::lifespan[x][y] = -1;
                                 break;
                             }
                         }
