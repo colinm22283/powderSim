@@ -17,6 +17,7 @@ struct particle
     std::string name;
     int lifespanMin;
     int lifespanMax;
+    bool flamable;
 };
 
 struct renderStyle
@@ -26,6 +27,6 @@ struct renderStyle
 
 namespace Particle
 {
-    extern particle particles[4];
-    extern renderStyle style[4];
+    extern particle particles[5];
+    extern renderStyle style[5];
 }
